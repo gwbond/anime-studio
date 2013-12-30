@@ -62,17 +62,17 @@
 	HOW IT WORKS:
 
 	The approach used here, borrowed from Fazek's fa-rl_meshinstance
-	script script, is to share an object between the source and dup
-	layers. A value to be shared by the source layer for the current
-	animation frame is maintained in an object that is stored in the
-	source layer. The same object is also stored in dup layers. This
-	way, any changes the source layer makes to the object are
-	automatically available to dup layers, obviating the need for the
-	source layer to explicitly search for dup layers and update them.
-	For this to work, the shared object needs to be updated by the
-	source layer before the shared object is referenced by dup
-	layers. This is guaranteed by placing the source layer beneath the
-	dup layers because Anime Studio executes layer scripts bottom-up.
+	script, is to share an object between the source and dup layers. A
+	value to be shared by the source layer for the current animation
+	frame is maintained in an object that is stored in the source
+	layer. The same object is also stored in dup layers. This way, any
+	changes the source layer makes to the object are automatically
+	available to dup layers, obviating the need for the source layer
+	to explicitly search for dup layers and update them.  For this to
+	work, the shared object needs to be updated by the source layer
+	before the shared object is referenced by dup layers. This is
+	guaranteed by placing the source layer beneath the dup layers
+	because Anime Studio executes layer scripts bottom-up.
 
 	The main advantage of the shared object approach used here is that
 	it provides low-overhead execution in comparison to an approach
