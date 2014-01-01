@@ -23,10 +23,14 @@
 	present in your Anime Studio scripts/utility folder:
 	GWB_Logger.lua and GWB_Share.lua
 
-	A source vector layer can have any name. Duplicate vector layers
-	must have the source layer name with a '.dup' extension. E.g., if
-	the source layer is named "Mouth", then duplicate layers must be
-	named "Mouth.dup".
+	A layer naming convention is used to associate source and
+	duplicate layers. A source layer can have any name. Duplicate
+	layers denote they are linked to a source layer using a layer name
+	of the form: "Arbitrary Layer Name > Source Layer Name". E.g., if
+	the source layer is named "Mouth Layer", then a duplicate layer
+	can be named "Anything At All > Mouth Layer", where "> Mouth
+	Layer" indicates that the layer is linked to the source layer
+	named "Mouth Layer".
 
 	Duplicate layers should have the same points as source layer.
 
@@ -86,7 +90,7 @@ function LayerScript(moho)
 		if ( sharedMeshData == nil ) 
 		then
 			-- create new shared mesh data object
-			logger:log( GWB_Logger.logLevel.ERROR, "no shared mesh data defined for dup layer" )
+			logger:log( GWB_Logger.logLevel.WARN, "no shared mesh data defined for dup layer" )
 			return
 		end
 
@@ -196,7 +200,7 @@ function LayerScript(moho)
 	-- two different behaviors depending on whether current layer is
     -- dup layer or source layer:
 
-	if share:isDupLayer( scriptLayer )
+	if share:isLinked( scriptLayer )
 	then
 
 	    if share:dupLayerConstraintsSatisfied( scriptLayer )

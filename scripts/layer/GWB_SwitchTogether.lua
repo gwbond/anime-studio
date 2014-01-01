@@ -20,18 +20,24 @@
 	present in your Anime Studio scripts/utility folder:
 	GWB_Logger.lua and GWB_Share.lua
 
-	A source switch layer can have any name. Duplicate switch layers
-	must have the source layer name with a '.dup' extension. E.g., if
-	the source layer is named "Mouth", then duplicate layers must be
-	named "Mouth.dup".
+	A layer naming convention is used to associate source and
+	duplicate layers. A source layer can have any name. Duplicate
+	layers denote they are linked to a source layer using a layer name
+	of the form: "Arbitrary Layer Name > Source Layer Name". E.g., if
+	the source layer is named "Mouth Layer", then a duplicate layer
+	can be named "Anything At All > Mouth Layer", where "> Mouth
+	Layer" indicates that the layer is linked to the source layer
+	named "Mouth Layer".
 
 	The source switch layer must be located *below* all duplicate
 	layers.
 
 	The source layer and all dup layers must install this layer script.
 
-	The sub-layers in the source and dup switch layers must have the
-	same names.
+	The sub-layers in the source and dup switch layers must have
+	matching names. Sub-layer names are considered matching if they
+	are the same, or if they have the same suffix e.g.,
+	one is named "mouth.open" and the other is named "jaw.open"
 
 	Only create/delete keys for the source layer. Dup layer keys will
 	be automatically created/deleted to match the source layer.
@@ -57,6 +63,48 @@ function LayerScript(moho)
 	-- create a sharing object with desired log level
 	local share = GWB_Share:new( moho, GWB_Logger.logLevel.ERROR )
 
+	--[[ -------------------------------------------------------------------------------- ]]--
+
+	-- Returns suffix (excluding the leading period and trailing
+    -- whitespace) for specified layerName, o.w. returns nil.
+
+	local function getLayerNameSuffix( layerName )
+	    return string.match( layerName, ".*%.(.-)%s*$" )
+	end
+
+	--[[ -------------------------------------------------------------------------------- ]]--
+
+	-- Returns sublayer name of specified dupSwitchLayer that matches
+    -- specified sourceSwitchLayerValue. Matching is satisfied if the
+    -- two strings are the same, or if string prefixes are the same
+    -- e.g., the strings match if one string is "mouth.open" and the
+    -- other is "jaw.open". If no matching sublayer name is found then
+    -- returns the specified sourceSwitchLayerValue.
+
+	local function getMatchingDupSwitchLayerValue( dupSwitchLayer, sourceSwitchLayerValue )
+
+        local subLayers = moho:LayerAsGroup( dupSwitchLayer )
+		local numSubLayers = subLayers:CountLayers()
+		local matchingLayerValue = sourceSwitchLayerValue
+		local sourceSwitchLayerValueSuffix = getLayerNameSuffix( sourceSwitchLayerValue )
+		local subLayerName
+
+		for layerIndex = 0, numSubLayers - 1 do
+			subLayerName = subLayers:Layer( layerIndex ):Name()
+			if ( ( subLayerName == sourceSwitchLayerValue ) or 
+			    getLayerNameSuffix( subLayerName ) == sourceSwitchLayerValueSuffix )
+			then
+				matchingLayerValue = subLayerName
+			    break
+			end
+		end
+
+		logger:log( GWB_Logger.logLevel.DEBUG, "dup switch sub-layer: "..matchingLayerValue.." matches source switch sub-layer: "..sourceSwitchLayerValue )
+	    return matchingLayerValue
+	end
+
+	--[[ -------------------------------------------------------------------------------- ]]--
+
 	local scriptLayer = moho.layer
 	local sourceSwitchLayerValue
 	local switchLayerAnimationChannel
@@ -73,7 +121,7 @@ function LayerScript(moho)
 	-- two different behaviors depending on whether current layer is
     -- dup layer or source layer:
 
-	if share:isDupLayer( switchLayer )
+	if share:isLinked( switchLayer )
 	then
 
 	    if share:dupLayerConstraintsSatisfied( switchLayer )
@@ -91,8 +139,9 @@ function LayerScript(moho)
 
 			else
 			    -- source has a key defined at current frame
-                -- so add a key for same value in dup layer
-				switchLayerAnimationChannel:SetValue( moho.frame, sourceSwitchLayerValue ) -- creates a key as a side-effect 
+                -- so add a key for matching value in dup layer
+				local dupSwitchLayerValue = getMatchingDupSwitchLayerValue( switchLayer, sourceSwitchLayerValue )
+				switchLayerAnimationChannel:SetValue( moho.frame, dupSwitchLayerValue ) -- creates a key as a side-effect 
 			end
 
 		end -- if share:dupLayerConstraintsSatisfied( switchLayer )

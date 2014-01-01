@@ -21,6 +21,19 @@
 	This utility script requires the following utility script to be
 	present in your Anime Studio scripts/utility folder: GWB_Logger
 
+	A layer naming convention is used to associate source and
+	duplicate layers. A source layer can have any name. Duplicate
+	layers denote they are linked to a source layer using a layer name
+	of the form: "Arbitrary Layer Name > Source Layer Name". E.g., if
+	the source layer is named "Mouth Layer", then a duplicate layer
+	can be named "Anything At All > Mouth Layer", where "> Mouth
+	Layer" indicates that the layer is linked to the source layer
+	named "Mouth Layer".
+
+	The source layer must be located *below* all duplicate layers.
+
+	The source layer and all dup layers must install this layer script.
+
 	Structure your layer script similar to the following:
 
 	--
@@ -33,7 +46,7 @@
 		-- get the layer associated with this script
 		local scriptLayer = moho.layer
 
-		if share:isDupLayer( scriptLayer ) -- current layer is a dup layer
+		if share:isLinked( scriptLayer ) -- current layer is a dup layer
 		then
 
 			if share:dupLayerConstraintsSatisfied( currentLayer )
@@ -54,8 +67,8 @@
 
 	EXAMPLE:
 
-	See the GWB_SwitchTogether layer script for a concrete example of
-	using this class.
+	See the GWB_SwitchTogether or GWB_MoveTogether layer scripts for
+	concrete examples of using this class.
 
 	--
 
@@ -109,6 +122,10 @@
 
 	--[[ -------------------------------------------------------------------------------- ]]--
 
+	-- Class constructor. Returns a new instance of a GWB_Share class
+    -- with specified moho ScriptInterface object and GWB_Logger
+    -- loggerLevel.
+
 	function GWB_Share:new( moho, loggerLevel ) 
 	 	local share = { moho = moho, logger = GWB_Logger:new( "GWB_Share", loggerLevel ) } 
 		setmetatable( share, self )
@@ -118,29 +135,33 @@
 
 	--[[ -------------------------------------------------------------------------------- ]]--
 
-	-- Returns true if specfied layer's name ends with ".dup"
-    -- extension, o.w. returns false.
+	-- Returns source layer name embedded in the specified dup layer
+    -- name. Source layer name leading and trailing white space are
+    -- trimmed. Source layer name is denoted by substring following
+    -- the ">" character. If no embedded name then returns nil.
 
-	function GWB_Share:isDupLayer( layer )
-	    return string.sub( layer:Name(), -4 ) == ".dup"
+	function GWB_Share:getSourceLayerName( layerName )
+	    return string.match( layerName, ".*>%s*(.-)%s*$" )		
 	end
 
 	--[[ -------------------------------------------------------------------------------- ]]--
 
-	-- Returns true if specfied layer's name is equal to specified
-    -- source layer's name with ".dup" extension, o.w. returns false.
+	-- Returns true if the specified layer's name denotes linkage to a
+    -- source layer i.e., if the layer's name includes a substring of
+    -- the form "> source layer name", o.w. returns false.
 
-	function GWB_Share:isDupLayerForSourceLayer( layerName, sourceLayerName )
-	    return sourceLayerName..".dup" == layerName
+	function GWB_Share:isLinked( layer )
+		return self:getSourceLayerName( layer:Name() ) ~= nil
 	end
 
 	--[[ -------------------------------------------------------------------------------- ]]--
 
-	-- Strips last four characters from the specified layer name and
-    -- returns the result.
+	-- Returns true if specified layerName1 denotes linkage with
+    -- specified layerName2 i.e., if the layerName name includes the
+    -- substring of the form "> layerName2", o.w. returns false.
 
-	function GWB_Share:getSourceLayerNameFromDupLayerName( dupLayerName ) 
-	    return string.sub( dupLayerName, 1, -5 ) -- strip ".dup" extension from dup layer name
+	function GWB_Share:isLinkedToLayer( layerName1, layerName2 )
+	    return layerName2 == self:getSourceLayerName( layerName1 )
 	end
 
 	--[[ -------------------------------------------------------------------------------- ]]--
@@ -163,7 +184,7 @@
 		    else
 			    sourceLayer = currentLayer -- this is first source layer in document
 			end
-        elseif ( self:isDupLayerForSourceLayer( currentLayerName, sourceLayerName ) ) -- current layer is a dup layer
+        elseif ( self:isLinkedToLayer( currentLayerName, sourceLayerName ) ) -- current layer is a dup layer
 	    then
 			if ( sourceLayer ~= nil ) 
 			then
@@ -253,7 +274,9 @@
 
 	    dupLayer.GWB_SharedSourceObject = nil -- clear reference to existing shared source object
 
-		local sourceLayer = self:getSourceLayer( self:getSourceLayerNameFromDupLayerName( dupLayer:Name() ) )
+		local sourceLayerName = self:getSourceLayerName( dupLayer:Name() )
+		self.logger:log( GWB_Logger.logLevel.DEBUG, "dup layer: "..dupLayer:Name().." linked to: "..sourceLayerName )
+		local sourceLayer = self:getSourceLayer( sourceLayerName )
 
 		if ( sourceLayer == nil ) 
 		then
@@ -297,7 +320,7 @@
 		    self.logger:log( GWB_Logger.logLevel.DEBUG, "re-associating dup layer: "..currentDupLayer:Name().." because shared source object is nil" )
 			return self:associateDupLayerWithSource( currentDupLayer ) 
 
-		elseif ( not self:isDupLayerForSourceLayer( currentDupLayer:Name(), currentDupLayer.GWB_SharedSourceObject.sourceLayerName ) )
+		elseif ( not self:isLinkedToLayer( currentDupLayer:Name(), currentDupLayer.GWB_SharedSourceObject.sourceLayerName ) )
 		then
 		    -- current dup layer name has changed or source layer name has changed
 		    self.logger:log( GWB_Logger.logLevel.DEBUG, "re-associating dup layer: "..currentDupLayer:Name().." because shared source layer name doesn't match" )
@@ -318,7 +341,7 @@
 
 		local currentLayer = layers:Layer( index )
 
-		if ( self:isDupLayerForSourceLayer( currentLayer:Name(), sourceLayer:Name() ) ) -- current layer is a dup layer
+		if ( self:isLinkedToLayer( currentLayer:Name(), sourceLayer:Name() ) ) -- current layer is a dup layer
 		then
 		    self.logger:log( GWB_Logger.logLevel.DEBUG, "re-initializing: "..currentLayer:Name().." with source layer name: "..sourceLayer.GWB_SharedSourceObject.sourceLayerName )
 		    currentLayer.GWB_SharedSourceObject = sourceLayer.GWB_SharedSourceObject -- (re-)initialize dup layer's shared source object
