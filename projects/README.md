@@ -1,0 +1,9 @@
+Projects
+========
+
+Anime Studio project files that demonstrate script use or illustrate Anime Studio functionality. 
+
+masking-tests
+-------------
+
+I created this series of four project files to better understand Anime Studio masking behavior, particularly when additive and subtractive mask layers are interleaved with masked layers. See the [masking-tests README](masking-tests/README.md) for more info.
