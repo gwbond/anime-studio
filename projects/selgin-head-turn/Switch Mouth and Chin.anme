@@ -1,7 +1,7 @@
 application/x-vnd.lm_mohodoc
 version 37
 ### Created in Moho version 9.5, © 1999-2013 Smith Micro Software, Inc.
-### Created: Fri Jan  3 21:36:36 2014
+### Created: Fri Jan  3 23:08:40 2014
 #escaped_quotes
 
 ### static values
@@ -835,7 +835,7 @@ layer_type 4
 	[
 		binding_mode 1
 		bones 1
-			"Head Turn" -1 -1 1 -1 1 1 -1 1 false 0.520541 0 -1 false 			[
+			"Head Turn" -1 -1 1 -1 1 1 -1 1 true 0.520541 0 -1 false 			[
 				keys 1
 					0 0 0.1 0.5 1 0 256 0
 			]
