@@ -1,4 +1,4 @@
-Projects
+projects
 ========
 
 Anime Studio project files that demonstrate script use or illustrate Anime Studio functionality. 
