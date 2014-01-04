@@ -120,6 +120,22 @@
 
 	GWB_Share = {}
 
+	function GWB_Share:Name()
+	    return "GWB_Share"
+	end
+
+	function GWB_Share:Version()
+		return "1.0.0"
+	end
+
+	function GWB_Share:Description()
+		return "Share arbitrary data between layers."
+	end
+
+	function GWB_Share:Creator()
+		return "gwbond"
+	end
+
 	--[[ -------------------------------------------------------------------------------- ]]--
 
 	-- Class constructor. Returns a new instance of a GWB_Share class

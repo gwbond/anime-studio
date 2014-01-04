@@ -13,7 +13,7 @@ I've chosen to use GitHub for artifact distribution because it provides a public
 Maintenance
 ===========
 
-Use the repo's [bug/enhancement tracker](https://github.com/gwbond/anime-studio/issues) if you find a bug or have a suggestion for an enhancement. Also feel free to [fork this repo](https://help.github.com/articles/fork-a-repo) and make your own changes to it. If you think this repo would benefit from your changes, [create a pull request](https://help.github.com/articles/using-pull-requests) for review and feedback. If you have no intention of contributing changes then you can [clone this repo.](http://stackoverflow.com/questions/5143119/what-does-this-mean-clone-the-github-repository)
+Use the repo's [bug/enhancement tracker](https://github.com/gwbond/anime-studio/issues) if you find a bug or have a suggestion for an enhancement. Also feel free to [fork this repo](https://help.github.com/articles/fork-a-repo) and make your own changes to it. If you think this repo would benefit from your changes, [create a pull request](https://help.github.com/articles/using-pull-requests) for review and feedback. If you want to make changes but you have no intention of contributing changes then you can [clone this repo.](http://stackoverflow.com/questions/5143119/what-does-this-mean-clone-the-github-repository)
 
 Repo Overview
 =============

@@ -39,6 +39,22 @@
 
 	GWB_Logger = {}
 
+	function GWB_Logger:Name()
+	    return "GWB_Logger"
+	end
+
+	function GWB_Logger:Version()
+		return "1.0.0"
+	end
+
+	function GWB_Logger:Description()
+		return "Log messages to the console."
+	end
+
+	function GWB_Logger:Creator()
+		return "gwbond"
+	end
+
 	--[[ -------------------------------------------------------------------------------- ]]--
 
 	function GWB_Logger:new( loggerName, loggerLevel )
