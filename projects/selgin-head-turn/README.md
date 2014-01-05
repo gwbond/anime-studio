@@ -1,18 +1,29 @@
 selgin-head-turn
 ================
 
-[Victor Paredes](http://animadoresporunacausa.blogspot.com) (aka "selgin") is a talented artist, animator and Anime Studio user who conceived [a clever approach](http://www.lostmarble.com/forum/viewtopic.php?t=15846) for smoothly animating a turning head. He describes a realistic example [here](https://vimeo.com/28938430) (pass: selgin). Selgin's approach utilizes advanced masking techniques and fazek's [meshinstance layer script.](http://www.lostmarble.com/forum/viewtopic.php?t=15845). 
+[Victor Paredes](http://animadoresporunacausa.blogspot.com) (aka "selgin") is a talented artist, animator and Anime Studio user who conceived [a clever approach](http://www.lostmarble.com/forum/viewtopic.php?t=15846) for smoothly animating a turning head. He describes a realistic example [here](https://vimeo.com/28938430) (pass: selgin). Selgin's approach utilizes advanced masking techniques and fazek's [meshinstance layer script.](http://www.lostmarble.com/forum/viewtopic.php?t=15845)
 
-This project illustrates a variation on selgin's head turn approach that uses switch layers for the mouth and jaw in order to take advantage of Anime Studio's built-in switch layer-based lip syncing. The project has been tested with Anime Studio Pro 9.5.
+This project illustrates a variation on selgin's head turn approach that uses switch layers for the mouth and jaw in order to take advantage of Anime Studio's built-in switch layer-based lip syncing.
+
+The project has been tested with Anime Studio Pro 9.5.
 
 ![](images/Switch-Mouth-and-Chin-640x480.gif)
+
+### Contents ###
+
+* [Overview](#overview)
+  * [Layer Scripts](#layer-scripts)
+  * [Masks](#masks)
+* [Ideas to Simplify Rigging](#ideas-to-simplify-rigging)
+  * [A New Menu Script](#a-new-menu-script)
+  * [A New Anime Studio Feature](#a-new-anime-studio-feature)
 
 Overview
 --------
 
 ![](images/head-turn-action.png)
 
-The project relies on two layer scripts included [in this repo](../../scripts/layer): GWB_MoveTogether and GWB_SwitchTogether. The former, a completely overhauled version of fazek's and ramon0's meshinstance layer script, is used to replicate point motion and curvature across vector layers. The latter replicates keyframes across switch layers. The approach also relies on animated layer ordering and relatively complex layer masking that derives from selgin's masking approach. Head turn animation is defined as a smart bone action. Compared to the rigging, the actual animation for this project was simple, basically following the same approach selgin demonstrates [here](https://vimeo.com/28938430) (pass: selgin). Selgin also provides a nice demonstration of layer order animation, used for this project's ears, [here](http://www.youtube.com/watch?v=zk--aWuAZnM)
+The project relies on two layer scripts included [in this repo](../../scripts/layer): GWB_MoveTogether and GWB_SwitchTogether. The former, a completely rewritten and refactored version of fazek's and ramon0's meshinstance layer script, is used to replicate point motion and curvature across vector layers. The latter replicates keyframes across switch layers. The approach also relies on animated layer ordering and relatively complex layer masking that derives from selgin's masking approach. Head turn animation is defined as a smart bone action. Compared to the rigging, the actual animation for this project was simple, basically following the same approach selgin demonstrates [here](https://vimeo.com/28938430) (pass: selgin). Selgin also provides a nice demonstration of layer order animation, used for this project's ears, [here](http://www.youtube.com/watch?v=zk--aWuAZnM)
 
 ### Layer Scripts ###
 
@@ -71,3 +82,16 @@ Finally, there are the masked visible "eyes", unmasked visible "left ear" and "r
 ![](images/ear.png)
 
 ![](images/nose.png)
+
+Ideas to Simplify Rigging
+-----------------------------
+
+As I mentioned above, animating the head is simple once the rigging is in place. It's easy to imagine ways the rigging could be simplified.
+
+### A New Menu Script ###
+
+One way to simplify rigging would be to create a menu script that generates the mask layers and adds the layer scripts for a given "head" group consisting of visible "face", "jaw", "lips", and "eyes" layers. I haven't checked the Anime Studio [scripting API](http://www.animestudioscripting.com/) to confirm whether this is possible though.
+
+### A New Anime Studio Feature ###
+
+Going beyond scripting, it occurs to me that Anime Studio could include a new feature that obviates the need for the two scripts used in this project. The new feature would allow the creation of a new layer type: a "linked layer." When a new linked layer is created, you specify the layer it's linked to, and you specify what properties of the linked layer you want the new layer to copy e.g., the linked layer's points and their associated motion and curvature, or the linked layer's switch keyframes, assuming the linked layer is a switch layer. While unlinked properties, such as masking, can be modified on the new layer, Anime Studio would ensure the user can't modify the linked properties. Anime Studio would also provide the option of hiding linked layers to reduce clutter for the animator.
