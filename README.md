@@ -1,14 +1,14 @@
 Welcome!
 ========
 
-Welcome to gwbond's anime-studio GitHub repo! First off, this repo is not affiliated in any way with [Smith Micro Software](http://www.smithmicro.com), the company responsible for the [Anime Studio](http://anime.smithmicro.com) product. This repo simply serves as a publicly accessible store of [free](https://github.com/gwbond/anime-studio/blob/master/LICENSE) Anime Studio scripts and projects that members of the Anime Studio community may find useful.
+Welcome to gwbond's anime-studio GitHub repo! First off, this repo is not affiliated in any way with [Smith Micro Software](http://www.smithmicro.com), the company responsible for the [Anime Studio](http://anime.smithmicro.com) product. This repo simply serves as a publicly accessible store of [free](LICENSE) Anime Studio scripts and projects that members of the Anime Studio community may find useful.
 
 Motivation
 ==========
 
 Some existing sources of Anime Studio projects and scripts are [AnimeStudioScripts.com](http://animestudioscripts.com), the [official](http://lostmarble.com/forum/) and [unofficial](http://animatorsforum.com) Anime Studio forums, and [HubuMedia](http://www.hubumedia.com/anime-studio-scripts).
 
-I've chosen to use GitHub for artifact distribution because it provides a publicly accessible version and source code control system, and a bug/enhancement tracker, all based on Git. Not only are these tools important for maintaining and developing artifacts, they also support community-based maintenance and development. These attributes have yet to be embraced by the Anime Studio community so I encourage developers to set up their own GitHub repos. Alternatively, I'd be happy to open up this repo to include artifacts from other developers. Just contact me by [creating a new issue](https://github.com/gwbond/anime-studio/issues) and including @gwbond somewhere in the body of the text.
+I've chosen to use GitHub for artifact distribution because it provides a publicly accessible version and source code control system, and a bug/enhancement tracker, all based on Git. Not only are these tools important for maintaining and developing artifacts, they also support community-based maintenance and development. These attributes have yet to be embraced by the Anime Studio community so I encourage developers to set up their own GitHub repos. Alternatively, I'd be happy to open up this repo to include artifacts from other developers. Just contact me by [creating a new issue](https://github.com/gwbond/anime-studio/issues) and include @gwbond somewhere in the body of the text.
 
 Maintenance
 ===========

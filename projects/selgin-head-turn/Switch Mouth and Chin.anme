@@ -1,7 +1,7 @@
 application/x-vnd.lm_mohodoc
 version 37
 ### Created in Moho version 9.5, © 1999-2013 Smith Micro Software, Inc.
-### Created: Fri Jan  3 23:08:40 2014
+### Created: Sat Jan  4 22:54:44 2014
 #escaped_quotes
 
 ### static values
@@ -5190,7 +5190,7 @@ layer_type 4
 								0 0 0.1 0.5 1 0 0 1.1
 						]
 				shapes 1
-					"" false false true true 
+					"" true false true true 
 					[
 						keys 1
 							0 0 0.1 0.5 1 0 0 1
