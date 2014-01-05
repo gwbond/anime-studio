@@ -10,6 +10,11 @@ Some existing sources of Anime Studio projects and scripts are [AnimeStudioScrip
 
 I've chosen to use GitHub for artifact distribution because it provides a publicly accessible version and source code control system, and a bug/enhancement tracker, all based on Git. Not only are these tools important for maintaining and developing artifacts, they also support community-based maintenance and development. These attributes have yet to be embraced by the Anime Studio community so I encourage developers to set up their own GitHub repos. Alternatively, I'd be happy to open up this repo to include artifacts from other developers. Just contact me by [creating a new issue](https://github.com/gwbond/anime-studio/issues) and include @gwbond somewhere in the body of the text.
 
+Download
+========
+
+Just visit the repo's [releases page](https://github.com/gwbond/anime-studio/releases) to download the latest release.
+
 Maintenance
 ===========
 
