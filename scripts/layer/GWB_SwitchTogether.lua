@@ -76,7 +76,7 @@ function LayerScript(moho)
 
 	-- Returns sublayer name of specified dupSwitchLayer that matches
     -- specified sourceSwitchLayerValue. Matching is satisfied if the
-    -- two strings are the same, or if string prefixes are the same
+    -- two strings are the same, or if string suffixes are the same
     -- e.g., the strings match if one string is "mouth.open" and the
     -- other is "jaw.open". If no matching sublayer name is found then
     -- returns the specified sourceSwitchLayerValue.
