@@ -31,6 +31,11 @@
 
 	logger:log( GWB_Logger.logLevel.WARN, "My Message" )
 
+	Alternatively, there is the following functionally equivalent
+	short-form invocation:
+
+	logger:warn( "My Message" )
+
 	To set the logger's current log level to DEBUG:
 
 	logger:setLogLevel( GWB_Logger.logLevel.DEBUG )
@@ -77,7 +82,8 @@
 
 	-- Prints specified message string to script console with a
     -- timestamp if specified message level is less than or equal to
-    -- the current globalLogLevel value.
+    -- the current globalLogLevel value. Returns true if message
+    -- logged o.w. returns false.
 
 	function GWB_Logger:log( messageLevel, message )
 
@@ -92,6 +98,39 @@
 
 	--[[ -------------------------------------------------------------------------------- ]]--
 
+	-- Log an ERROR message. Returns true if message logged
+    -- o.w. returns false.
+
+	function GWB_Logger:error( message ) 
+	
+	    return self:log( GWB_Logger.logLevel.ERROR, message )
+
+	end
+
+	--[[ -------------------------------------------------------------------------------- ]]--
+
+	-- Log an WARN message. Returns true if message logged
+    -- o.w. returns false.
+
+	function GWB_Logger:warn( message ) 
+	
+	    return self:log( GWB_Logger.logLevel.WARN, message )
+
+	end
+
+	--[[ -------------------------------------------------------------------------------- ]]--
+
+	-- Log an DEBUG message. Returns true if message logged
+    -- o.w. returns false.
+
+	function GWB_Logger:debug( message ) 
+	
+	    return self:log( GWB_Logger.logLevel.DEBUG, message )
+
+	end
+
+	--[[ -------------------------------------------------------------------------------- ]]--
+
 	-- Set logger's current log level.
 
 	function GWB_Logger:setLogLevel( loggerLevel ) 
@@ -99,3 +138,4 @@
 	    self.loggerLevel = loggerLevel
 
 	end
+

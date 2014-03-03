@@ -110,7 +110,7 @@
 	The script also guards against unpredictable Anime Studio layer
 	script execution behavior: running a script multiple times on a
 	frame for a layer, not running a script at all on a frame for a
-	layer during playback, intermittlently re-creating layer objects
+	layer during playback, intermittently re-creating layer objects
 	(resulting in loss of shared objects), intermittently running a
 	script on frame zero when the playhead is not on frame zero.
 
@@ -257,7 +257,7 @@
 	    if ( sourceLayer.GWB_SharedSourceObject == nil )
 		then
 		    -- create and initialize a new shared object
-			self.logger:log( GWB_Logger.logLevel.WARN, "source layer creating a new shared source object" )
+			self.logger:warn( "source layer creating a new shared source object" )
 			sourceLayer.GWB_SharedSourceObject = {}
 			sourceLayer.GWB_SharedSourceObject.sourceLayerName = sourceLayer:Name()
 			sourceLayer.GWB_SharedSourceObject.currentFrame = self.moho.frame
@@ -266,7 +266,7 @@
 
 		elseif ( sourceLayer.GWB_SharedSourceObject.sourceLayerName ~= sourceLayer:Name() )
 		then
-			self.logger:log( GWB_Logger.logLevel.WARN, "source layer name has changed" )
+			self.logger:warn( "source layer name has changed" )
 		    -- update shared object source layer name
 			sourceLayer.GWB_SharedSourceObject.sourceLayerName = sourceLayer:Name()
 			-- update current frame
@@ -291,19 +291,19 @@
 	    dupLayer.GWB_SharedSourceObject = nil -- clear reference to existing shared source object
 
 		local sourceLayerName = self:getSourceLayerName( dupLayer:Name() )
-		self.logger:log( GWB_Logger.logLevel.DEBUG, "dup layer: "..dupLayer:Name().." linked to: "..sourceLayerName )
+		self.logger:debug( "dup layer: "..dupLayer:Name().." linked to: "..sourceLayerName )
 		local sourceLayer = self:getSourceLayer( sourceLayerName )
 
 		if ( sourceLayer == nil ) 
 		then
 			-- no source layer, more than one source layer, or source layer above a dup layer
-			self.logger:log ( GWB_Logger.logLevel.DEBUG, "invalid/missing source layer for: "..dupLayer:Name() )
+			self.logger:debug ( "invalid/missing source layer for: "..dupLayer:Name() )
 		    return false
 
 		elseif ( sourceLayer.GWB_SharedSourceObject == nil )
 		then
 			-- source layer hasn't run this script so initialize it
-			self.logger:log ( GWB_Logger.logLevel.DEBUG, "initializing source layer for: "..dupLayer:Name() )
+			self.logger:debug( "initializing source layer for: "..dupLayer:Name() )
 			self:sourceLayerInitialized( sourceLayer )
 			-- add reference to newly created source shared object
 		    dupLayer.GWB_SharedSourceObject = sourceLayer.GWB_SharedSourceObject
@@ -312,7 +312,7 @@
 		elseif ( sourceLayer.GWB_SharedSourceObject.sourceLayerName ~= sourceLayer:Name() )
 		then
 			 -- source layer hasn't run this script since its name has changed
-			self.logger:log ( GWB_Logger.logLevel.DEBUG, "shared source layer name: "..sourceLayer.GWB_SharedSourceObject.sourceLayerName.." differs from actual source layer name: "..sourceLayer:Name() )
+			self.logger:debug( "shared source layer name: "..sourceLayer.GWB_SharedSourceObject.sourceLayerName.." differs from actual source layer name: "..sourceLayer:Name() )
 		    return false
 
 		else 
@@ -333,13 +333,13 @@
 		if ( currentDupLayer.GWB_SharedSourceObject == nil )
 		then
 		    -- current dup layer uninitialized
-		    self.logger:log( GWB_Logger.logLevel.DEBUG, "re-associating dup layer: "..currentDupLayer:Name().." because shared source object is nil" )
+		    self.logger:debug( "re-associating dup layer: "..currentDupLayer:Name().." because shared source object is nil" )
 			return self:associateDupLayerWithSource( currentDupLayer ) 
 
 		elseif ( not self:isLinkedToLayer( currentDupLayer:Name(), currentDupLayer.GWB_SharedSourceObject.sourceLayerName ) )
 		then
 		    -- current dup layer name has changed or source layer name has changed
-		    self.logger:log( GWB_Logger.logLevel.DEBUG, "re-associating dup layer: "..currentDupLayer:Name().." because shared source layer name doesn't match" )
+		    self.logger:debug( "re-associating dup layer: "..currentDupLayer:Name().." because shared source layer name doesn't match" )
 			return self:associateDupLayerWithSource( currentDupLayer )
 
         else
@@ -359,7 +359,7 @@
 
 		if ( self:isLinkedToLayer( currentLayer:Name(), sourceLayer:Name() ) ) -- current layer is a dup layer
 		then
-		    self.logger:log( GWB_Logger.logLevel.DEBUG, "re-initializing: "..currentLayer:Name().." with source layer name: "..sourceLayer.GWB_SharedSourceObject.sourceLayerName )
+		    self.logger:debug( "re-initializing: "..currentLayer:Name().." with source layer name: "..sourceLayer.GWB_SharedSourceObject.sourceLayerName )
 		    currentLayer.GWB_SharedSourceObject = sourceLayer.GWB_SharedSourceObject -- (re-)initialize dup layer's shared source object
 		end
 
@@ -432,14 +432,14 @@
 
 				if ( dupLayer.GWB_SharedSourceObject.currentFrame == nil )
 				then
-					self.logger:log( GWB_Logger.logLevel.WARN, "current dup frame: "..self.moho.frame.." not equal to current source frame: nil" )
+					self.logger:warn( "current dup frame: "..self.moho.frame.." not equal to current source frame: nil" )
 				else
-			        self.logger:log( GWB_Logger.logLevel.WARN, "current dup frame: "..self.moho.frame.." not equal to current source frame: "..dupLayer.GWB_SharedSourceObject.currentFrame )
+			        self.logger:warn( "current dup frame: "..self.moho.frame.." not equal to current source frame: "..dupLayer.GWB_SharedSourceObject.currentFrame )
 				end
 				return false
 			end
 		else
-			self.logger:log( GWB_Logger.logLevel.ERROR, "source layer not associated with "..dupLayer:Name().." - ensure source layer is running this script and is located below dup layers" )
+			self.logger:error( "source layer not associated with "..dupLayer:Name().." - ensure source layer is running this script and is located below dup layers" )
 			return false
 		end
 	end
