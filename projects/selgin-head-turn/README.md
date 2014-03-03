@@ -61,7 +61,7 @@ Above the "mouth" is the "lips > [jaw]" switch layer, representing the currently
 
 ![](images/lips-open.png)
 
-Next is the "[lips] > [jaw]" switch mask layer. In contrast to previous mask layers, this layer invisbly subtracts from the underlying mask, leaving a lips-shaped hole the mask. The resulting mask, applied to visible layers above it, namely the "face > [face]" and "jaw > [jaw]" layers, allows the underlying "lips > [jaw]" and "mouth" layers to be visible through the hole.
+Next is the "[lips] > [jaw]" switch mask layer. In contrast to previous mask layers, this layer invisbly subtracts from the underlying mask, leaving a lips-shaped hole the mask. Note that, in general, the hole must be a filled object in order to act as a mask. The resulting mask, applied to visible layers above it, namely the "face > [face]" and "jaw > [jaw]" layers, allows the underlying "lips > [jaw]" and "mouth" layers to be visible through the hole.
 
 ![](images/lips-mask.png)
 
@@ -86,12 +86,28 @@ Finally, there are the masked visible "eyes", unmasked visible "left ear" and "r
 Ideas to Simplify Rigging
 -----------------------------
 
-As I mentioned above, animating the head is simple once the rigging is in place. It's easy to imagine ways the rigging could be simplified.
+It's easy to imagine ways the rigging and head turn animation could be simplified.
 
-### A New Menu Script ###
+### Eliminate the "jaw" switch layers ###
+
+For a simple animated face, it may be sufficient to animate only the lips but not the jaw. In this case, the jaw switch layers can be eliminated, and the jaw would simply be drawn as part of the face.
+
+### Auto-Masking and Auto-Scripting ###
 
 One way to simplify rigging would be to create a menu script that generates the mask layers and adds the layer scripts for a given "head" group consisting of visible "face", "jaw", "lips", and "eyes" layers. I haven't checked the Anime Studio [scripting API](http://www.animestudioscripting.com/) to confirm whether this is possible though.
 
-### A New Anime Studio Feature ###
+### Linked Layers ###
 
 Going beyond scripting, it occurs to me that Anime Studio could include a new feature that obviates the need for the two scripts used in this project. The new feature would allow the creation of a new layer type: a "linked layer." When a new linked layer is created, you specify the layer it's linked to, and you specify what properties of the linked layer you want the new layer to copy e.g., the linked layer's points and their associated motion and curvature, or the linked layer's switch keyframes, assuming the linked layer is a switch layer. While unlinked properties, such as masking, can be modified on the new layer, Anime Studio would ensure the user can't modify the linked properties. Anime Studio would also provide the option of hiding linked layers to reduce clutter for the animator.
+
+### Reversed Smart-Bone Actions ###
+
+When rigging a head turn, one must create two smart-bones actions: one for clockwise head turn and the other for counter-clockwise head turn. The only difference between the two is that the keyframe sequences for one action is the reverse of the other action. Today, one must manually create both sequences. A proposed new Anime Studio feature would simply create the reversed sequence for a smart-bone given a sequence for an existing smart-bone.
+
+### Symmetric Smart-Bone Actions and Symmetric Drawing ###
+
+When creating a smart-bone action for a head turn, one creates a keyframe sequence that defines the 360 degree progression of the face turning from front view to profile view to back of head view to opposite profile and then returning to front. For anything but the simplest heads, defining the keys for half the head turn i.e., from front to profile to back, can result in many keyframes on many layers. When the head is symmetric or nearly symmetric, which is often the case, creating the keyframes for the remaining half of the head turn requires creating mirror-image keyframes for the opposite side of the head. This task is complicated by the fact that there is no support for comparing one profile view with the mirror image view when adjusting point positions. Assuming a symmetric face, the proposed new feature would generate the keyframes for half of the turn based on the keyframes already defined for the other half of the turn. In order to make this work, there would initially have to be perfect point symmetry for the face, which brings us to the next new feature...
+
+A related new feature would support symmetric drawing along an axis. Any points placed on one side of the axis would appear in mirror-image on the other side. A closed curve on one side of the axis would result in the creation of a mirror-image closed curve on the other side. A closed curve extending across the axis would be created when the two end points of an open curve on one side of the axis are placed on the axis. Using this feature a completely symmetric face could be constructed. Then, using the aforementioned symmetric smart-bone actions feature, half of the the head turn keyframing could be automatically generated based on the first half. After this is done, one could disable symmetric drawing support, thereby allowing one to introduce asymmetries to the head and to the head turn keyframing.
+
+The benefit of these two new features would be to remove much of the drudgery currently associated with creating a head and animating a head turn, thereby allowing one to concentrate on the creative aspects of drawing and animation.
